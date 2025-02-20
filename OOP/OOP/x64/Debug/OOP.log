@@ -1,4 +1,0 @@
-﻿  OOP.cpp
-F:\Uni stuff\OOP_testing\OOP\OOP.cpp(47,49): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-F:\Uni stuff\OOP_testing\OOP\OOP.cpp(91,54): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  OOP.vcxproj -> F:\Uni stuff\OOP_testing\OOP\x64\Debug\OOP.exe

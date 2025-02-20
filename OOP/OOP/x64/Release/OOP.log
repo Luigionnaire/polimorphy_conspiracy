@@ -1,8 +1,0 @@
-﻿  OOP.cpp
-F:\Uni stuff\polimorphy_conspiracy\OOP\OOP.cpp(47,49): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-F:\Uni stuff\polimorphy_conspiracy\OOP\OOP.cpp(92,54): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Generating code
-  Previous IPDB not found, fall back to full compilation.
-  All 31 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Finished generating code
-  OOP.vcxproj -> F:\Uni stuff\polimorphy_conspiracy\OOP\x64\Release\OOP.exe
