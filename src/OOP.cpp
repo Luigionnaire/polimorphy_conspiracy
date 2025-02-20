@@ -1,8 +1,10 @@
 #define _USE_MATH_DEFINES
 
-#include <iostream>
+#include <array>
 #include <math.h>
-#include <chrono>
+#include <iostream>
+#include "timer.h"
+
 class shape_base
 {
 public:
@@ -100,9 +102,9 @@ float GetAreaSwitch(shape_union Shape)
 
 int main()
 {
-    const int shapeCount = 500000;
-    shape_base** shapes = new shape_base * [shapeCount];
-    shape_union* shapeArray = new shape_union[shapeCount];
+    static const int shapeCount = 500000;
+    std::vector<shape_base*> shapes(shapeCount);
+    std::vector<shape_union> shapeArray(shapeCount);
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
     for (int i = 0; i < shapeCount; ++i) {
@@ -123,36 +125,32 @@ int main()
         shapeArray[i].Height = dim2;
     }
 
-    auto start = std::chrono::high_resolution_clock::now();
-
-    float totalArea = TotalAreaVTBL(shapeCount, shapes);
-
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
-
-    std::cout << "Total area of "<< shapeCount << " shapes: " << totalArea << std::endl;
-    std::cout << "Time taken to calculate areas: " << duration.count() << " ns\n";
-    std::cout << "Time taken per shape: " << duration.count()/shapeCount << " ns\n";
-
+    float VtblTotal{ 0.0f };
+    {
+        Timer timer("Polymorphic VTable", shapeCount);
+        
+        for (int ShapeIndex = 0; ShapeIndex < shapeCount; ++ShapeIndex)
+        {
+            VtblTotal += shapes[ShapeIndex]->Area();
+        }
+    }
 
     // Time area calculation with switch-based 
-    auto startNoPoly = std::chrono::high_resolution_clock::now();
     float totalAreaNoPoly = 0.0f;
-    for (int i = 0; i < shapeCount; ++i) {
-        totalAreaNoPoly += GetAreaSwitch(shapeArray[i]);
+    {
+        Timer timer("Non-Polymorphic switch", shapeCount);
+
+        for (int i = 0; i < shapeCount; ++i) {
+            totalAreaNoPoly += GetAreaSwitch(shapeArray[i]);
+        }
     }
-    auto endNoPoly = std::chrono::high_resolution_clock::now();
-    auto durationNoPoly = std::chrono::duration_cast<std::chrono::nanoseconds>(endNoPoly - startNoPoly);
 
-    std::cout << "Time taken (non-poly): " << durationNoPoly.count() << " ns\n";
-    std::cout << "Total area (non-poly): " << totalAreaNoPoly << "\n";
-    std::cout << "Time taken per shape (non-poly): " << durationNoPoly.count()/shapeCount << " ns\n";
-
+    std::cout << "total: " << VtblTotal << std::endl;
+    std::cout << "total: " << totalAreaNoPoly << std::endl;
     // Clean up memory
     for (int i = 0; i < shapeCount; ++i) {
         delete shapes[i];
     }
-    delete[] shapes;
 
     system("pause");
 

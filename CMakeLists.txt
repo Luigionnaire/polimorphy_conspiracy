@@ -4,17 +4,13 @@ set(APPLICATION_NAME "PolyPloy")
 
 project(${APPLICATION_NAME} VERSION 0.0.1)
 
-# Application File
-# YOU WILL NEED TO ADD YOUR LAYER FILES HERE
-#set (PROJECT_HEADER_FILES
-#	"application/include/app.hpp"
-#	"application/include/GAMR3531.hpp"
-#	"application/include/ImGui/bloomPanel.hpp"
-#	"application/include/ui.hpp"
-#)
+set (PROJECT_HEADER_FILES
+	"include/timer.h"
+)
 
 set (PROJECT_SOURCE_FILES
 	"src/OOP.cpp"
+	"src/timer.cpp"
 )
 
 # Add executable target and include directory
@@ -31,3 +27,6 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}../include" PREFIX "include" FILES
 
 # Use C++20
 set_target_properties(${APPLICATION_NAME} PROPERTIES CXX_STANDARD 20)
+
+#Enable AVX2
+SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /arch:AVX2")
