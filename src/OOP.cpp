@@ -1,56 +1,12 @@
-#define _USE_MATH_DEFINES
-
 #include <array>
-#include <math.h>
 #include <iostream>
 #include "timer.h"
+#include "switch.h"
+#include "triangle.h"
+#include "circle.h"
+#include "square.h"
+#include "rectangle.h"
 
-class shape_base
-{
-public:
-    shape_base() {}
-    virtual float Area() = 0;
-};
-
-class square : public shape_base
-{
-public:
-    square(float SideInit) : Side(SideInit) {}
-    virtual float Area() { return Side * Side; }
-
-private:
-    float Side;
-};
-
-class rectangle : public shape_base
-{
-public:
-    rectangle(float WidthInit, float HeightInit) : Width(WidthInit), Height(HeightInit) {}
-    virtual float Area() { return Width * Height; }
-
-private:
-    float Width, Height;
-};
-
-class triangle : public shape_base
-{
-public:
-    triangle(float BaseInit, float HeightInit) : Base(BaseInit), Height(HeightInit) {}
-    virtual float Area() { return 0.5f * Base * Height; }
-
-private:
-    float Base, Height;
-};
-
-class circle : public shape_base
-{
-public:
-    circle(float RadiusInit) : Radius(RadiusInit) {}
-    virtual float Area() { return M_PI * Radius * Radius; }
-
-private:
-    float Radius;
-};
 
 float TotalAreaVTBL(int ShapeCount, shape_base** Shapes)
 {
@@ -64,40 +20,6 @@ float TotalAreaVTBL(int ShapeCount, shape_base** Shapes)
 
 }
 
-// NO POLY
-enum shape_type : int
-{
-    Shape_Square,
-    Shape_Rectangle,
-    Shape_Triangle,
-    Shape_Circle,
-
-    Shape_Count,
-};
-
-struct shape_union
-{
-    shape_type Type;
-    float Width;
-    float Height;
-};
-
-float GetAreaSwitch(shape_union Shape)
-{
-    float Result = 0.0f;
-
-    switch (Shape.Type)
-    {
-    case Shape_Square: { Result = Shape.Width * Shape.Width; } break;
-    case Shape_Rectangle: { Result = Shape.Width * Shape.Height; } break;
-    case Shape_Triangle: { Result = 0.5f * Shape.Width * Shape.Height; } break;
-    case Shape_Circle: { Result = M_PI * Shape.Width * Shape.Width; } break;
-
-    case Shape_Count: {} break;
-    }
-
-    return Result;
-}
 
 
 int main()

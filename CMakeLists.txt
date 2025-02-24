@@ -6,6 +6,12 @@ project(${APPLICATION_NAME} VERSION 0.0.1)
 
 set (PROJECT_HEADER_FILES
 	"include/timer.h"
+	"include/switch.h"
+	"include/shape_base.h"
+	"include/square.h"
+	"include/rectangle.h"
+	"include/triangle.h"
+	"include/circle.h"
 )
 
 set (PROJECT_SOURCE_FILES
