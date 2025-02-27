@@ -6,6 +6,7 @@
 #include "circle.h"
 #include "square.h"
 #include "rectangle.h"
+#include "DODShapes.h"
 
 
 float TotalAreaVTBL(int ShapeCount, shape_base** Shapes)
@@ -24,15 +25,16 @@ float TotalAreaVTBL(int ShapeCount, shape_base** Shapes)
 
 int main()
 {
-    static const int shapeCount = 500000;
+    static const int shapeCount = 50000;
     std::vector<shape_base*> shapes(shapeCount);
     std::vector<shape_union> shapeArray(shapeCount);
+    DODShapeContainer DODShapes;
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
     for (int i = 0; i < shapeCount; ++i) {
         int shapeType = std::rand() % 4;
-        float dim1 = 1.0f + static_cast<float>(std::rand() % 100);
-        float dim2 = 1.0f + static_cast<float>(std::rand() % 100);
+        float dim1 = 1.0f + (static_cast<float>(std::rand() % 100) / 10.f);
+        float dim2 = 1.0f + (static_cast<float>(std::rand() % 100) / 10.f);
 
         switch (shapeType) {
         case 0: shapes[i] = new square(dim1); break;
@@ -45,13 +47,21 @@ int main()
         shapeArray[i].Type = static_cast<shape_type>(shapeType);
         shapeArray[i].Width = dim1;
         shapeArray[i].Height = dim2;
+
+        // DOD
+        switch (shapeType) {
+        case 0: DODShapes.add(DODSquare(dim1)); break;
+        case 1: DODShapes.add(DODRectangle(dim1, dim2)); break;
+        case 2: DODShapes.add(DODTriangle(dim1, dim2)); break;
+        case 3: DODShapes.add(DODCircle(dim1)); break;
+        }
     }
 
     float VtblTotal{ 0.0f };
     {
         Timer timer("Polymorphic VTable", shapeCount);
         
-        for (int ShapeIndex = 0; ShapeIndex < shapeCount; ++ShapeIndex)
+        for (size_t ShapeIndex = 0; ShapeIndex < shapeCount; ++ShapeIndex)
         {
             VtblTotal += shapes[ShapeIndex]->Area();
         }
@@ -62,13 +72,30 @@ int main()
     {
         Timer timer("Non-Polymorphic switch", shapeCount);
 
-        for (int i = 0; i < shapeCount; ++i) {
+        for (size_t i = 0; i < shapeCount; ++i) {
             totalAreaNoPoly += GetAreaSwitch(shapeArray[i]);
         }
     }
 
-    std::cout << "total: " << VtblTotal << std::endl;
-    std::cout << "total: " << totalAreaNoPoly << std::endl;
+    // Time area calculation with DOD
+    float totalAreaDOD = 0.0f;
+    {
+        Timer timer("DOD", shapeCount);
+
+        totalAreaDOD = DODShapes.calcArea();
+    }
+
+    // Time area calculation with DOD in order
+    float totalAreaDODinOrder = 0.0f;
+    {
+        Timer timer("DOD in order", shapeCount);
+
+        totalAreaDODinOrder = DODShapes.calcAreaInOrder();
+    }
+    std::cout << "total: " << std::setprecision(10) << VtblTotal << std::endl;
+    std::cout << "total: " << std::setprecision(10) << totalAreaNoPoly << std::endl;
+    std::cout << "total: " << std::setprecision(10) << totalAreaDOD << std::endl;
+    std::cout << "total: " << std::setprecision(10) << totalAreaDODinOrder << std::endl;
     // Clean up memory
     for (int i = 0; i < shapeCount; ++i) {
         delete shapes[i];

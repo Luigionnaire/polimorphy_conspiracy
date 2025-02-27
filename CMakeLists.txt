@@ -12,11 +12,13 @@ set (PROJECT_HEADER_FILES
 	"include/rectangle.h"
 	"include/triangle.h"
 	"include/circle.h"
+	"include/DODShapes.h"
 )
 
 set (PROJECT_SOURCE_FILES
 	"src/OOP.cpp"
 	"src/timer.cpp"
+	"src/DODShapes.cpp"
 )
 
 # Add executable target and include directory
