@@ -13,6 +13,9 @@ set (PROJECT_HEADER_FILES
 	"include/triangle.h"
 	"include/circle.h"
 	"include/DODShapes.h"
+	"include/arrayOfStructs.h"
+	"include/structOfArrays.h"
+
 )
 
 set (PROJECT_SOURCE_FILES

@@ -3,5 +3,5 @@
 class shape_base {
 public:
     shape_base() {}
-    virtual float Area() = 0;
+    virtual float area() = 0;
 };

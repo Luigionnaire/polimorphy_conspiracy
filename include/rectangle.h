@@ -4,7 +4,7 @@ class rectangle : public shape_base
 {
 public:
     rectangle(float WidthInit, float HeightInit) : Width(WidthInit), Height(HeightInit) {}
-    virtual float Area() { return Width * Height; }
+    virtual float area() { return Width * Height; }
 
 private:
     float Width, Height;

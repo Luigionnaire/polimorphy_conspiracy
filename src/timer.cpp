@@ -12,5 +12,5 @@ Timer::~Timer() {
 	m_end = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(m_end - m_start);
 	auto durationPerShape = ((double)duration.count()) / (double)m_shapeCount;
-	std::cout << "Timer " << m_label << " duration: " << duration.count() << " duration per shape: " << std::setprecision(15) << durationPerShape << std::endl;
+	std::cout << "Timer " << m_label << " duration:\t" << duration.count() << "ns  -  Per instance: " << std::setprecision(15) << durationPerShape << "ns " << std::endl;
 }
